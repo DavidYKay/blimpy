@@ -6,9 +6,7 @@ import (
     "flag"
     "fmt" 
     "log"
-    "net/http"
     "net"
-    "text/template"
 )
 
 ////////////////////////////////////////
@@ -131,13 +129,6 @@ func (h *hub) run() {
 ////////////////////////////////////////
 // Main
 ////////////////////////////////////////
-
-var addr = flag.String("addr", ":8080", "http service address")
-var homeTempl = template.Must(template.ParseFiles("home.html"))
-
-func homeHandler(c http.ResponseWriter, req *http.Request) {
-    homeTempl.Execute(c, req.Host)
-}
 
 func main() {
     flag.Parse()
