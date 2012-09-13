@@ -17,22 +17,6 @@ import (
 
 const BUFFER_SIZE = 256
 
-//type wsconnection struct {
-//    // The websocket connection.
-//    socket *websocket.Conn
-//
-//    // Buffered channel of outbound messages.
-//    send chan string
-//}
-
-//type connection struct {
-//    // The websocket connection.
-//    socket *net.Conn
-//
-//    // Buffered channel of outbound messages.
-//    send chan string
-//}
-
 //type connection struct {
 type connection struct {
     // The websocket connection.
@@ -41,21 +25,6 @@ type connection struct {
     // Buffered channel of outbound messages.
     send chan string
 }
-
-//func (c *connection) wsReader() {
-//    for {
-//        var message string
-//        err := websocket.Message.Receive(c.socket, &message)
-//        if err != nil {
-//            break
-//        }
-//        // IF this is a chat message, broadcast it:
-//        h.broadcast <- message
-//        // TODO: IF this is a movement command, hand it to nav system
-//        // TODO: IF we don't recognize it, throw an error
-//    }
-//    c.socket.Close()
-//}
 
 func (c *connection) udpReader() {
     for {
@@ -80,18 +49,6 @@ func (c *connection) udpReader() {
     c.socket.Close()
 }
 
-
-//func (c *connection) wsWriter() {
-//    for message := range c.send {
-//        fmt.Println("Sending message: " + message) 
-//        err := websocket.Message.Send(c.socket, message)
-//        if err != nil {
-//            break
-//        }
-//    }
-//    c.socket.Close()
-//}
-
 func (c *connection) udpWriter() {
     for message := range c.send {
         fmt.Println("Sending message: " + message) 
@@ -112,27 +69,6 @@ func (c *connection) udpWriter() {
     }
     c.socket.Close()
 }
-
-
-//func handleRawSocket(socket net.Conn) {
-//    c := &connection{send: make(chan string, 256), socket: socket}
-//    h.register <- c
-//    defer func() { h.unregister <- c }()
-//    go c.writer()
-//    c.reader()
-//}
-
-//func wsHandler(ws *websocket.Conn) {
-//    c := &connection{send: make(chan string, BUFFER_SIZE), socket: ws}
-//    h.register <- c
-//    defer func() { h.unregister <- c }()
-//    go c.writer()
-//    c.wsReader()
-//}
-
-//func handleTcp(socket TCPConn) {
-//    handleRawSocket(socket)
-//}
 
 func handleUdp(socket *net.UDPConn) {
     c := &connection{send: make(chan string, BUFFER_SIZE), socket: socket}
@@ -207,27 +143,6 @@ func main() {
     flag.Parse()
     go h.run()
 
-    //http.HandleFunc("/", homeHandler)
-    //http.Handle("/ws", websocket.Handler(wsHandler))
-    //if err := http.ListenAndServe(*addr, nil); err != nil {
-    //    log.Fatal("Websocket ListenAndServe:", err)
-    //}
-
-    //ln, err := net.Listen("tcp", ":5005")
-    //if err != nil {
-    //    log.Fatal("TCP Listen:", err)
-    //}
-    //for {
-    //    conn, err := ln.Accept()
-    //    if err != nil {
-    //        log.Error("TCP accept error:", err)
-    //        // handle error
-    //        continue
-    //    }
-    //    go handleTcp(conn)
-    //}
-
-    //ln, err := net.ListenUDP("udp", ":4004")
     udpAddr := &net.UDPAddr{ IP: net.ParseIP("127.0.0.1"), Port: 4004 }
     conn, err := net.ListenUDP("udp", udpAddr)
     if err != nil {
