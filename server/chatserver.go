@@ -98,7 +98,7 @@ var h = hub{
     broadcast: make(chan string),
     register: make(chan *connection),
     unregister: make(chan *connection),
-    connections: make(map[*connection]bool),
+    connections: make(map[*connection]net.UDPAddr),
 }
 
 func (h *hub) run() {
@@ -132,6 +132,7 @@ func (h *hub) run() {
 
 func main() {
     flag.Parse()
+    m := make(map[string]int, 100)
     go h.run()
 
     udpAddr := &net.UDPAddr{ IP: net.ParseIP("127.0.0.1"), Port: 4004 }
