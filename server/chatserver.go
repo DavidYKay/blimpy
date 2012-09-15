@@ -13,7 +13,8 @@ import (
 // Chat Connection
 ////////////////////////////////////////
 
-const BUFFER_SIZE = 256
+const MAIN_BUFFER_SIZE = 1024
+const CHANNEL_BUFFER_SIZE = 256
 
 type connection struct {
     // The websocket connection.
@@ -30,7 +31,7 @@ func listenUdp(c *net.UDPConn) {
     for {
         var message string
 
-        buf := make([]byte, 1024)
+        buf := make([]byte, MAIN_BUFFER_SIZE)
         n, addr, err := c.ReadFromUDP(buf)
 
         if err != nil {
