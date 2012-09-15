@@ -37,7 +37,6 @@ class ChatWriterThread(threading.Thread):
     print "started writer"
     while True:
       message = raw_input('> ')
-      #print "message:", message
       self.socket.sendto(message, (UDP_IP, UDP_PORT))
 
 listener = ChatListenerThread()
