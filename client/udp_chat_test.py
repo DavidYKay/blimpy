@@ -22,8 +22,10 @@ class ChatListenerThread(threading.Thread):
   def run (self):
     print "started listener"
     while True:
-      string, address = self.socket.recvfrom(BUFFER_SIZE)
+      message, address = self.socket.recvfrom(BUFFER_SIZE)
+      print ""
       print "Received message: %s" % message
+      print "> "
 
 class ChatWriterThread(threading.Thread):
   socket = None

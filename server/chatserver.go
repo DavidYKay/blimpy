@@ -41,9 +41,9 @@ func listenUdp(c *net.UDPConn) {
         message = string(buf[0:n])
         log.Println("received message from ", addr, message)
         
-        n, err := c.socket.WriteToUDP(buf, addr)
-        if err != nil {
-            log.Fatalln("error writing UDP: ", err)
+        writeSize, writeErr := c.WriteToUDP(buf, addr)
+        if writeErr != nil {
+            log.Fatalln("error writing UDP: ", writeErr, writeSize)
             //break
 	}
 
